@@ -1,0 +1,10 @@
+*.png
+dataset/
+yolov8n.pt
+register_v.py
+register_v2.py
+s_security.py
+security_son.py
+security_system_v.py
+security_system.py
+security.py
