@@ -7,7 +7,6 @@ import sys
 def main():
     print("=== BIOMETRIC SYSTEM REGISTRATION ===")
     
-    # Bilgileri terminalden değil, Tkinter arayüzünden (sys.argv) alıyoruz
     if len(sys.argv) >= 3:
         user_id = sys.argv[1]
         user_name = sys.argv[2]
@@ -20,14 +19,14 @@ def main():
         os.makedirs(folder)
         print(f"[INFO] Created a new folder named '{folder}'.")
 
-    # FEATURE 1: Prevent Duplicate Registration
+    # FEATURE : Prevent Duplicate Registration
     existing_files = os.listdir(folder)
     for file in existing_files:
         if file.startswith(f"User.{user_id}."):
             print(f"[ERROR] User ID {user_id} already exists! Please use a different ID.")
             return
 
-    # FEATURE 6: Unique Dynamic QR Code (Added Timestamp)
+    # FEATURE : Unique Dynamic QR Code 
     unique_timestamp = int(time.time())
     qr_data = f"ID:{user_id}-{user_name}-{unique_timestamp}"
     img_qr = qrcode.make(qr_data)
@@ -50,7 +49,7 @@ def main():
         gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         faces = face_detector.detectMultiScale(gray_frame, scaleFactor=1.3, minNeighbors=5)
 
-        # FEATURE 2: Warn if no face is detected
+        # FEATURE : Warn if no face is detected
         if len(faces) == 0:
             cv2.putText(frame, "WARNING: NO FACE DETECTED!", (50, 50), 
                         cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
