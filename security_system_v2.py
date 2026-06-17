@@ -46,6 +46,8 @@ def main():
         expected_id = -1
         expected_name = "Unknown"
 
+        panic_detected = False
+
         # --- 1. QR CODE DETECTION & HOMOGRAPHY ---
         qr_codes = decode(enhanced_gray)
         for qr in qr_codes:
@@ -98,12 +100,16 @@ def main():
                     except:
                         pass
 
+                panic_detected = current_emotion in ['fear', 'sad', 'angry']
                 # C. Identity Prediction
                 predicted_id, confidence = recognizer.predict(face_roi_gray)
 
                 if weapon_detected:
                     color = (0, 0, 255)
                     status_text = "SYSTEM LOCKED: THREAT"
+                elif panic_detected:
+                    color = (0, 0, 255)
+                    status_text = "SYSTEM LOCKED: PANIC"    
                 elif not is_real:
                     color = (0, 0, 255)
                     status_text = "DENIED: FAKE FACE"
@@ -125,7 +131,7 @@ def main():
                 cv2.putText(frame, f"Emotion: {current_emotion.upper()}", (x, y + h + 25), 
                             cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
                 
-                if current_emotion in ['fear', 'sad', 'angry']:
+                if panic_detected:
                     cv2.putText(frame, "SILENT PANIC ALARM TRIGGERED", (20, 30), 
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 3)
 
